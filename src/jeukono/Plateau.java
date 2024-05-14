@@ -20,12 +20,7 @@ public class Plateau extends JPanel {
 		monPlateau = new Case[4][4];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if ((i % 2 == 0) == (j % 2 == 0)) {
-					monPlateau[i][j] = new Case(Color.white, i, j, 0);
-				} else {
-					monPlateau[i][j] = new Case(Color.black, i, j, 0);
-				}
-
+				monPlateau[i][j] = new Case(Color.gray, i, j, 0);
 				this.add(monPlateau[i][j]);
 			}
 		}
@@ -39,19 +34,19 @@ public class Plateau extends JPanel {
 		monPlateau[1][2].setPion((new Pion(CouleurPion.blanc)));
 		monPlateau[1][3].setPion((new Pion(CouleurPion.blanc)));
 
-		monPlateau[0][0].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[0][1].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[0][2].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[0][3].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[1][0].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[1][1].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[1][2].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[1][3].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][0].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][1].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][2].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][3].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][0].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][1].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][2].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][3].setPion((new Pion(CouleurPion.noir)));
 	}
 
 	public int coupValide(Case dep, Case arr) {
-		int dx = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
-		int dy = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
+		// int dx = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
+		// int dy = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
 		int x1 = dep.getAbscisse(); // depart ligne
 		int x2 = arr.getAbscisse(); // arrivé ligne
 		int y1 = dep.getOrdonnee(); // depart colonne
@@ -62,11 +57,11 @@ public class Plateau extends JPanel {
 	}
 
 	public boolean verifieDeplacementHorPrise(Case dep, Case arr) {
-
+		return (true);
 	}
 
 	public boolean verifieDeplacementVertPrise(Case dep, Case arr) {
-
+		return (true);
 	}
 
 	public boolean verifieDeplacementHor(Case dep, Case arr) {

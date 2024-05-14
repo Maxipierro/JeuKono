@@ -10,7 +10,6 @@ import static java.lang.String.valueOf;
 public class Fenetre extends JFrame {
 
 	public static JButton boutonAnnuler = new JButton("Annuler");
-
 	public static JButton boutonReinit = new JButton("Reinitialiser");
 
 	public Fenetre(String name) {

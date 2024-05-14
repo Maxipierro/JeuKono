@@ -16,32 +16,40 @@ public class Plateau extends JPanel {
 	 * Constructor for objects of class Echiquier
 	 */
 	public Plateau() {
-		this.setLayout(new GridLayout(4, 4));
-		monPlateau = new Case[4][4];
+		this.setLayout(new GridLayout(4, 8));
+		monPlateau = new Case[4][8];
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
+			for (int j = 0; j < 2; j++) {
+				monPlateau[i][j] = new Case(Color.white, i, j, 1);
+				this.add(monPlateau[i][j]);
+			}
+			for (int j = 2; j < 6; j++) {
 				monPlateau[i][j] = new Case(Color.gray, i, j, 0);
+				this.add(monPlateau[i][j]);
+			}
+			for (int j = 6; j < 8; j++) {
+				monPlateau[i][j] = new Case(Color.black, i, j, 1);
 				this.add(monPlateau[i][j]);
 			}
 		}
 
-		monPlateau[0][0].setPion((new Pion(CouleurPion.blanc)));
-		monPlateau[0][1].setPion((new Pion(CouleurPion.blanc)));
 		monPlateau[0][2].setPion((new Pion(CouleurPion.blanc)));
 		monPlateau[0][3].setPion((new Pion(CouleurPion.blanc)));
-		monPlateau[1][0].setPion((new Pion(CouleurPion.blanc)));
-		monPlateau[1][1].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[0][4].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[0][5].setPion((new Pion(CouleurPion.blanc)));
 		monPlateau[1][2].setPion((new Pion(CouleurPion.blanc)));
 		monPlateau[1][3].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][4].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][5].setPion((new Pion(CouleurPion.blanc)));
 
-		monPlateau[2][0].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[2][1].setPion((new Pion(CouleurPion.noir)));
 		monPlateau[2][2].setPion((new Pion(CouleurPion.noir)));
 		monPlateau[2][3].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[3][0].setPion((new Pion(CouleurPion.noir)));
-		monPlateau[3][1].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][4].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[2][5].setPion((new Pion(CouleurPion.noir)));
 		monPlateau[3][2].setPion((new Pion(CouleurPion.noir)));
 		monPlateau[3][3].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][4].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[3][5].setPion((new Pion(CouleurPion.noir)));
 	}
 
 	public int coupValide(Case dep, Case arr) {

@@ -13,7 +13,6 @@ public class Pion {
 		}else{
 			typePion = "zebre";
 		}
-		// A completer
 	}
 
 	public int getMvt() {

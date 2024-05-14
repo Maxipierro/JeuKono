@@ -2,13 +2,11 @@ package jeukono;
 
 import static java.lang.String.valueOf;
 
+import java.awt.Color;
+import java.awt.GridLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Plateau extends JPanel {
 	// instance variables - replace the example below with your own
@@ -23,9 +21,9 @@ public class Plateau extends JPanel {
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				if ((i % 2 == 0) == (j % 2 == 0)) {
-					monPlateau[i][j] = new Case(Color.white, i, j);
+					monPlateau[i][j] = new Case(Color.white, i, j, 0);
 				} else {
-					monPlateau[i][j] = new Case(Color.lightGray, i, j);
+					monPlateau[i][j] = new Case(Color.black, i, j, 0);
 				}
 
 				this.add(monPlateau[i][j]);

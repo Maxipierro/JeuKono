@@ -32,14 +32,10 @@ public class Case extends JButton implements ActionListener {
 		this.setBackground(couleur);
 		this.setPreferredSize(new Dimension(100, 100));
 		this.typeCase = typeCase;
-
-		// A completer
-
 		addActionListener(this);
 	}
 
 	public Pion getPion() {
-		// A completer
 		return pion;
 	}
 
@@ -47,8 +43,7 @@ public class Case extends JButton implements ActionListener {
 		if (p != null) {
 			this.pion = p;
 			occupe = true;
-			this.imagePion = new ImageIcon(
-					"C:\\Users\\appipa\\IdeaProjects\\ProjetEchec\\Icones\\Pion" + getPion().getCouleur() + ".png");
+			this.imagePion = new ImageIcon("C:\\Users\\Afev 92 02\\Documents\\jeukono\\JeuKono\\" +pion.toString() + ".png");
 			this.setIcon(imagePion);
 		} else {
 			occupe = false;

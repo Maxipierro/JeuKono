@@ -20,12 +20,7 @@ public class Plateau extends JPanel {
 		monPlateau = new Case[4][4];
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
-				if ((i % 2 == 0) == (j % 2 == 0)) {
-					monPlateau[i][j] = new Case(Color.gray, i, j, 0);
-				} else {
-					monPlateau[i][j] = new Case(Color.gray, i, j, 0);
-				}
-
+				monPlateau[i][j] = new Case(Color.gray, i, j, 0);
 				this.add(monPlateau[i][j]);
 			}
 		}

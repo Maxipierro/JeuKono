@@ -2,10 +2,13 @@ package jeukono;
 
 import static java.lang.String.valueOf;
 
-import java.awt.GridLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Plateau extends JPanel {
 	// instance variables - replace the example below with your own
@@ -16,33 +19,92 @@ public class Plateau extends JPanel {
 	 */
 	public Plateau() {
 		this.setLayout(new GridLayout(4, 4));
-		// A completer
+		monPlateau = new Case[4][4];
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				if ((i % 2 == 0) == (j % 2 == 0)) {
+					monPlateau[i][j] = new Case(Color.white, i, j);
+				} else {
+					monPlateau[i][j] = new Case(Color.lightGray, i, j);
+				}
+
+				this.add(monPlateau[i][j]);
+			}
+		}
+
+		monPlateau[0][0].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[0][1].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[0][2].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[0][3].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][0].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][1].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][2].setPion((new Pion(CouleurPion.blanc)));
+		monPlateau[1][3].setPion((new Pion(CouleurPion.blanc)));
+
+		monPlateau[0][0].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[0][1].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[0][2].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[0][3].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[1][0].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[1][1].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[1][2].setPion((new Pion(CouleurPion.noir)));
+		monPlateau[1][3].setPion((new Pion(CouleurPion.noir)));
 	}
 
-	public int coupValide(Case dep, Case arr) {// Teste si la Pion qui est en dep peut de deplacer en arr : renvoie 0 si
-												// deplacement interdit, 1 si deplacement valide, 2 si prise valide
-		// A completer
+	public int coupValide(Case dep, Case arr) {
+		int dx = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
+		int dy = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
+		int x1 = dep.getAbscisse(); // depart ligne
+		int x2 = arr.getAbscisse(); // arrivé ligne
+		int y1 = dep.getOrdonnee(); // depart colonne
+		int y2 = arr.getOrdonnee(); // arrivé colonne
+
+		System.out.println("mov pion:" + x1 + "," + y1 + "--->" + x2 + "," + y2);
 		return 0;
 	}
 
 	public boolean verifieDeplacementHorPrise(Case dep, Case arr) {
-		// A completer
-		return true;
+
 	}
 
 	public boolean verifieDeplacementVertPrise(Case dep, Case arr) {
-		// A completer
-		return true;
+
 	}
 
 	public boolean verifieDeplacementHor(Case dep, Case arr) {
-		// A completer
-		return true;
+		int nombre_colonne = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
+		if (dep.getOrdonnee() < arr.getOrdonnee()) {
+			for (int i = 1; i < nombre_colonne; i++) {
+				if (monPlateau[dep.getAbscisse()][dep.getOrdonnee() + i].isOccupe())
+					return false;
+			}
+			return true;
+		} else {
+			for (int j = 1; j < nombre_colonne; j++) {
+				if (monPlateau[dep.getAbscisse()][dep.getOrdonnee() - j].isOccupe())
+					return false;
+			}
+			return true;
+		}
 	}
 
 	public boolean verifieDeplacementVert(Case dep, Case arr) {
-		// A completer
-		return true;
+		int dx = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
+		if (dep.getAbscisse() < arr.getAbscisse()) {
+			for (int i = 1; i < dx; i++) {
+				if (monPlateau[dep.getAbscisse() + i][dep.getOrdonnee()].isOccupe()) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			for (int j = 1; j < dx; j++) {
+				if (monPlateau[dep.getAbscisse() - j][dep.getOrdonnee()].isOccupe()) {
+					return false;
+				}
+			}
+			return true;
+		}
 	}
 
 	public void jouerCoup(Case dep, Case arr) {

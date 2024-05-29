@@ -30,7 +30,7 @@ public class StockPion extends JPanel {
 
 	public void ajouterPion(Pion p) {
 		// A completer
-		if (indi > 2) {
+		if (indi > 3) {
 			indi = 0;
 			indj++;
 		}

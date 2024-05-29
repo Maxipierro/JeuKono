@@ -2,27 +2,29 @@ package jeukono;
 
 import static java.lang.String.valueOf;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.*;
 
-public class Case extends JButton implements ActionListener
-{
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
-  private int typeCase; // si typeCase == 0, case du plateau, si typeCase ==1
-                        // case du stock
+public class Case extends JButton implements ActionListener {
 
-  private ImageIcon imagePion;
-  private Pion pion;
-  private Color couleurFond;
+	private int typeCase; // si typeCase == 0, case du plateau, si typeCase ==1
+							// case du stock
 
-  private boolean occupe;
-  private int abscisse;
-  private int ordonnee;
+	private ImageIcon imagePion;
+	private Pion pion;
+	private Color couleurFond;
 
-  public Case (Color couleur, int abs, int ord, int typeCase)
-  {
+	private boolean occupe;
+	private int abscisse;
+	private int ordonnee;
+
+	public Case(Color couleur, int abs, int ord, int typeCase) {
 
 		this.abscisse = abs;
 		this.ordonnee = ord;
@@ -69,24 +71,19 @@ public class Case extends JButton implements ActionListener
 		return this.typeCase;
 	}
 
-  public boolean
-  isOccupe ()
-  {
-    // A completer
-    return this.occupe;
-  }
+	public boolean isOccupe() {
+		// A completer
+		return this.occupe;
+	}
 
-  public void
-  actionPerformed (ActionEvent e)
-  {
-    // A completer
-    if (Kono.etat == 0)
-      {
-        // reactiver le bouton annuler
-        Fenetre.boutonAnnuler.setEnabled (false);
+	public void actionPerformed(ActionEvent e) {
+		// A completer
+		if (Kono.etat == 0) {
+			// reactiver le bouton annuler
+			Fenetre.boutonAnnuler.setEnabled(false);
 
-        // si on n'a pas encore selectionne de case de depart
-        Kono.caseDep = ((Case)e.getSource ());
+			// si on n'a pas encore selectionne de case de depart
+			Kono.caseDep = ((Case) e.getSource());
 
 			// si la case selectionne pour le depart du deplacement est valide : elle est
 			// occupee par une Pion de la couleur du joueur dont c'est le tour, on peut
@@ -122,9 +119,6 @@ public class Case extends JButton implements ActionListener
 					// si la case selectionnee est bien dns le plateau et que le coup est valide
 					if (Kono.unPlateau.coupValide(Kono.caseDep, Kono.caseArr) == 1) {
 						// si c'est un deplacement simple
-						// Kono.caseArr.setPion(Kono.caseDep.getPion());
-						// Kono.caseDep.setBorder(null);
-						// Kono.caseDep.setPion(null);
 
 						// 1. on deplace le pion
 						Kono.unPlateau.jouerCoup(Kono.caseDep, Kono.caseArr);
@@ -179,92 +173,65 @@ public class Case extends JButton implements ActionListener
 					}
 				}
 
-            // on met a jour l'affichage su nombre de pions des joueurs
-            Kono.scoreBlanc.setText ("Score Joueur Blanc \n "
-                                     + valueOf (Kono.nbPionBlanc));
-            Kono.scoreNoir.setText ("Score Joueur Noir \n"
-                                    + valueOf (Kono.nbPionNoir));
-            Kono.fenetrePrincipale.repaint ();
-            Kono.fenetrePrincipale.validate ();
-            // on reactive le bouton annuler
-            Fenetre.boutonAnnuler.setEnabled (true);
+				// on met a jour l'affichage su nombre de pions des joueurs
+				Kono.scoreBlanc.setText("Score Joueur Blanc \n " + valueOf(Kono.nbPionBlanc));
+				Kono.scoreNoir.setText("Score Joueur Noir \n" + valueOf(Kono.nbPionNoir));
+				Kono.fenetrePrincipale.repaint();
+				Kono.fenetrePrincipale.validate();
+				// on reactive le bouton annuler
+				Fenetre.boutonAnnuler.setEnabled(true);
 
-            if (finPartieNbPion || finPartieBloque || finPartieSansPrise)
-              {
-                // si la partie est finie pour une des raisons de fin de partie
-                // ouvrir une boite de dialogue pour signifier que le partie
-                // est finie : 2 choix fermer le jeu ou recommencer
-                JOptionPane d = new JOptionPane (); // les textes figurant //
-                                                    // sur les boutons
-                String lesTextes[]
-                    = { "Recommencer",
-                        "Fermer le jeu" }; // indice du bouton qui a été //
-                                           // cliqué ou CLOSED_OPTION
+				if (finPartieNbPion || finPartieBloque || finPartieSansPrise) {
+					// si la partie est finie pour une des raisons de fin de partie
+					// ouvrir une boite de dialogue pour signifier que le partie
+					// est finie : 2 choix fermer le jeu ou recommencer
+					JOptionPane d = new JOptionPane(); // les textes figurant //
+														// sur les boutons
+					String lesTextes[] = { "Recommencer", "Fermer le jeu" }; // indice du bouton qui a été //
+																				// cliqué ou CLOSED_OPTION
 
-                int retour = 0;
-                if (finPartieSansPrise)
-                  {
-                    if (Kono.nbPionBlanc == Kono.nbPionNoir)
-                      retour = d.showOptionDialog (
-                          this,
-                          "Partie terminée car plus de 25 coups sans prise. Les joueurs sont à égalité",
-                          "Fin de jeu", 1, 1, new ImageIcon (), lesTextes,
-                          lesTextes[0]);
-                    else
-                      {
-                        if (Kono.nbPionBlanc > Kono.nbPionNoir)
-                          Kono.joueur = CouleurPion.noir;
-                        else
-                          Kono.joueur = CouleurPion.blanc;
-                        retour = d.showOptionDialog (
-                            this,
-                            "Partie terminée car plus de 25 coups sans prise. Le joueur "
-                                + Kono.joueur + " a perdu !",
-                            "Fin de jeu", 1, 1, new ImageIcon (), lesTextes,
-                            lesTextes[0]);
-                      }
-                  }
-                else
-                  {
-                    if (finPartieNbPion)
-                      {
-                        retour = d.showOptionDialog (
-                            this,
-                            "Partie terminée car le joueur " + Kono.joueur
-                                + " n'a plus qu'un pion. Il a perdu !",
-                            "Fin de jeu", 1, 1, new ImageIcon (), lesTextes,
-                            lesTextes[0]);
-                      }
-                    else
-                      {
-                        if (finPartieBloque)
-                          {
-                            retour = d.showOptionDialog (
-                                this,
-                                "Partie terminée car le joueur " + Kono.joueur
-                                    + " ne est bloque. Il a perdu !",
-                                "Fin de jeu", 1, 1, new ImageIcon (),
-                                lesTextes, lesTextes[0]);
-                          }
-                      }
-                  }
-                if (retour == 0)
-                  {
-                    Kono.unPlateau.reinitialiser ();
-                  }
-                else
-                  {
-                    Kono.fenetrePrincipale.dispose ();
-                  }
-              }
-          }
-      }
-  }
+					int retour = 0;
+					if (finPartieSansPrise) {
+						if (Kono.nbPionBlanc == Kono.nbPionNoir)
+							retour = d.showOptionDialog(this,
+									"Partie terminée car plus de 25 coups sans prise. Les joueurs sont à égalité",
+									"Fin de jeu", 1, 1, new ImageIcon(), lesTextes, lesTextes[0]);
+						else {
+							if (Kono.nbPionBlanc > Kono.nbPionNoir)
+								Kono.joueur = CouleurPion.noir;
+							else
+								Kono.joueur = CouleurPion.blanc;
+							retour = d.showOptionDialog(this,
+									"Partie terminée car plus de 25 coups sans prise. Le joueur " + Kono.joueur
+											+ " a perdu !",
+									"Fin de jeu", 1, 1, new ImageIcon(), lesTextes, lesTextes[0]);
+						}
+					} else {
+						if (finPartieNbPion) {
+							retour = d.showOptionDialog(this,
+									"Partie terminée car le joueur " + Kono.joueur
+											+ " n'a plus qu'un pion. Il a perdu !",
+									"Fin de jeu", 1, 1, new ImageIcon(), lesTextes, lesTextes[0]);
+						} else {
+							if (finPartieBloque) {
+								retour = d.showOptionDialog(this,
+										"Partie terminée car le joueur " + Kono.joueur + " ne est bloque. Il a perdu !",
+										"Fin de jeu", 1, 1, new ImageIcon(), lesTextes, lesTextes[0]);
+							}
+						}
+					}
+					if (retour == 0) {
+						Kono.unPlateau.reinitialiser();
+					} else {
+						Kono.fenetrePrincipale.dispose();
+					}
+				}
+			}
+		}
+	}
 
-  public String
-  toString ()
-  {
-    // A completer
-    return "";
-  }
+	public String toString() {
+		// A completer
+		return "";
+	}
 }

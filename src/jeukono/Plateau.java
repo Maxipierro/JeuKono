@@ -2,15 +2,15 @@ package jeukono;
 
 import static java.lang.String.valueOf;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 
-public class Plateau extends JPanel
-{
-  // instance variables - replace the example below with your own
-  private Case[][] monPlateau;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
+public class Plateau extends JPanel {
+	// instance variables - replace the example below with your own
+	private Case[][] monPlateau;
 
 	/**
 	 * Constructor for objects of class Echiquier
@@ -48,21 +48,17 @@ public class Plateau extends JPanel
 		int y2 = arr.getOrdonnee(); // arrivé colonne
 		int dy = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
 		int dx = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
-		int CaseDevantx = ((dep.getAbscisse() + arr.getAbscisse()) / 2);
-		int CaseDevanty = ((dep.getOrdonnee() + arr.getOrdonnee()) / 2);
 
 		System.out
 				.println("mov pion:" + x1 + "," + y1 + "--->" + x2 + "," + y2 + " delta_x : " + dx + " delta_y :" + dy);
 
 		if ((dx == 2 && dy == 0) || (dy == 2 && dx == 0)) {
 			if (verifieDeplacementHorPrise(dep, arr) == true) {
-				System.out.println("case Devant : " + CaseDevanty + "dy");
 				// trouver le problème avec la case de devant qui doit être de la même équipe
 				System.out.println("CoupValideDeplacementHorizontalePrise");
 				resultat = 2;
 			}
 			if (verifieDeplacementVertPrise(dep, arr) == true) {
-				System.out.println("case Devant : " + CaseDevantx + "dx");
 				System.out.println("CoupValideDeplacementVerticalePrise");
 
 				resultat = 2;
@@ -88,11 +84,17 @@ public class Plateau extends JPanel
 			Pion arrPion = arr.getPion(); // on regarde la couleur du pion présent sur la case pour savoir de qu'elle
 			// équipe il appartient
 			Pion depPion = dep.getPion();
+			int CaseDevanty = ((dep.getOrdonnee() + arr.getOrdonnee()) / 2);
 			if (arrPion.getCouleur() == depPion.getCouleur()) {
 				return false;
 			} else {
-
-				return true;
+				if (this.monPlateau[dep.getAbscisse()][CaseDevanty].isOccupe() == true
+						&& this.monPlateau[dep.getAbscisse()][CaseDevanty].getPion().getCouleur() == dep.getPion()
+								.getCouleur()) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		} else {
 			return false;
@@ -105,10 +107,18 @@ public class Plateau extends JPanel
 			Pion arrPion = arr.getPion(); // on regarde la couleur du pion présent sur la case pour savoir de qu'elle
 			// équipe il appartient
 			Pion depPion = dep.getPion();
+			int CaseDevantx = ((dep.getAbscisse() + arr.getAbscisse()) / 2);
+			System.out.println("caseDevantY " + CaseDevantx);
 			if (arrPion.getCouleur() == depPion.getCouleur()) {
 				return false;
 			} else {
-				return true;
+				if ((this.monPlateau[CaseDevantx][dep.getOrdonnee()].isOccupe() == true)
+						&& (this.monPlateau[CaseDevantx][dep.getOrdonnee()].getPion().getCouleur() == dep.getPion()
+								.getCouleur())) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		} else {
 			return false;
@@ -168,88 +178,74 @@ public class Plateau extends JPanel
 		return true;
 	}
 
-  public void
-  annulerCoup (Case dep, Case arr)
-  {
+	public void annulerCoup(Case dep, Case arr) {
 
-    Pion temp = null;
-    int nb_colonne = Kono.abs (dep.getAbscisse () - arr.getAbscisse ());
-    int nb_ligne = Kono.abs (dep.getOrdonnee () - arr.getOrdonnee ());
+		Pion temp = null;
+		int nb_colonne = Kono.abs(dep.getAbscisse() - arr.getAbscisse());
+		int nb_ligne = Kono.abs(dep.getOrdonnee() - arr.getOrdonnee());
 
-    if ((nb_ligne == 0 && nb_colonne == 1)
-        || (nb_ligne == 1 && nb_colonne == 0)) // si dernier coup simple
-      {
-        System.out.println ("Coup simple");
-        temp = dep.getPion ();
-        dep.setPion (arr.getPion ());
-        arr.setPion (temp);
-      }
+		if ((nb_ligne == 0 && nb_colonne == 1) || (nb_ligne == 1 && nb_colonne == 0)) // si dernier coup simple
+		{
+			System.out.println("Coup simple");
+			temp = dep.getPion();
+			dep.setPion(arr.getPion());
+			arr.setPion(temp);
+		}
 
-    if ((nb_ligne == 0 && nb_colonne == 2)
-        || (nb_ligne == 2 && nb_colonne == 0)) // si dernier coup avec prise
-      {
-        System.out.println ("Coup prise");
-        if (Kono.joueur == CouleurPion.blanc)
-          {
-            System.out.println ("On annule le coup du joueur noir");
-            dep.setPion (arr.getPion ());
-            arr.setPion (Kono.stockNoir.enleverPion ());
-            Kono.nbPionBlanc++;
-          }
-        else
-          {
-            System.out.println ("On annule le coup du joueur blanc");
+		if ((nb_ligne == 0 && nb_colonne == 2) || (nb_ligne == 2 && nb_colonne == 0)) // si dernier coup avec prise
+		{
+			System.out.println("Coup prise");
+			if (Kono.joueur == CouleurPion.blanc) {
+				System.out.println("On annule le coup du joueur noir");
+				dep.setPion(arr.getPion());
+				arr.setPion(Kono.stockNoir.enleverPion());
+				Kono.nbPionBlanc++;
+			} else {
+				System.out.println("On annule le coup du joueur blanc");
 
-            dep.setPion (arr.getPion ());
-            arr.setPion (Kono.stockBlanc.enleverPion ());
-            Kono.nbPionNoir++;
-          }
-      }
+				dep.setPion(arr.getPion());
+				arr.setPion(Kono.stockBlanc.enleverPion());
+				Kono.nbPionNoir++;
+			}
+		}
 
-    Kono.etat = 0;
-    if (Kono.joueur == CouleurPion.blanc)
-      Kono.joueur = CouleurPion.noir;
-    else
-      Kono.joueur = CouleurPion.blanc;
+		Kono.etat = 0;
+		if (Kono.joueur == CouleurPion.blanc)
+			Kono.joueur = CouleurPion.noir;
+		else
+			Kono.joueur = CouleurPion.blanc;
 
-    Kono.scoreBlanc.setText ("Score Joueur Blanc \n "
-                             + valueOf (Kono.nbPionBlanc));
-    Kono.scoreNoir.setText ("Score Joueur Noir \n"
-                            + valueOf (Kono.nbPionNoir));
+		Kono.scoreBlanc.setText("Score Joueur Blanc \n " + valueOf(Kono.nbPionBlanc));
+		Kono.scoreNoir.setText("Score Joueur Noir \n" + valueOf(Kono.nbPionNoir));
 
-    Kono.fenetrePrincipale.repaint ();
-    Kono.fenetrePrincipale.validate ();
+		Kono.fenetrePrincipale.repaint();
+		Kono.fenetrePrincipale.validate();
 
-    Fenetre.boutonAnnuler.setEnabled (false);
-  }
+		Fenetre.boutonAnnuler.setEnabled(false);
+	}
 
-  public void
-  reinitialiser ()
-  {
+	public void reinitialiser() {
 
-    System.out.println ("dans reinitialiser");
-    Kono.fenetrePrincipale.dispose ();
-    Kono.fenetrePrincipale = new Fenetre ("Jeu du Kono");
-    // On donne la possibilite de fermer la fenetre
-    Kono.fenetrePrincipale.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-    Kono.fenetrePrincipale.ajouterComposants (
-        Kono.fenetrePrincipale.getContentPane ());
-    Kono.joueur = CouleurPion.blanc;
-    Kono.etat = 0;
-    Kono.nbPionBlanc = 8;
-    Kono.nbPionNoir = 8;
-    Kono.nbCoupSansPrise = 0;
+		System.out.println("dans reinitialiser");
+		Kono.fenetrePrincipale.dispose();
+		Kono.fenetrePrincipale = new Fenetre("Jeu du Kono");
+		// On donne la possibilite de fermer la fenetre
+		Kono.fenetrePrincipale.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		Kono.fenetrePrincipale.ajouterComposants(Kono.fenetrePrincipale.getContentPane());
+		Kono.joueur = CouleurPion.blanc;
+		Kono.etat = 0;
+		Kono.nbPionBlanc = 8;
+		Kono.nbPionNoir = 8;
+		Kono.nbCoupSansPrise = 0;
 
-    Kono.scoreBlanc.setText ("Score Joueur Blanc \n "
-                             + valueOf (Kono.nbPionBlanc));
-    Kono.scoreNoir.setText ("Score Joueur Noir \n"
-                            + valueOf (Kono.nbPionNoir));
+		Kono.scoreBlanc.setText("Score Joueur Blanc \n " + valueOf(Kono.nbPionBlanc));
+		Kono.scoreNoir.setText("Score Joueur Noir \n" + valueOf(Kono.nbPionNoir));
 
-    Kono.fenetrePrincipale.pack ();
-    Kono.fenetrePrincipale.setVisible (true);
-    Kono.fenetrePrincipale.repaint ();
-    Kono.fenetrePrincipale.validate ();
+		Kono.fenetrePrincipale.pack();
+		Kono.fenetrePrincipale.setVisible(true);
+		Kono.fenetrePrincipale.repaint();
+		Kono.fenetrePrincipale.validate();
 
-    Fenetre.boutonAnnuler.setEnabled (false);
-  }
+		Fenetre.boutonAnnuler.setEnabled(false);
+	}
 }

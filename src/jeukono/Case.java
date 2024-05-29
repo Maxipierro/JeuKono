@@ -24,77 +24,50 @@ public class Case extends JButton implements ActionListener
   public Case (Color couleur, int abs, int ord, int typeCase)
   {
 
-    this.abscisse = abs;
-    this.ordonnee = ord;
-    this.couleurFond = couleur;
+		this.abscisse = abs;
+		this.ordonnee = ord;
+		this.typeCase = typeCase;
+		this.couleurFond = couleur;
+		this.setOpaque(true);
+		this.setBackground(couleur);
+		this.setPreferredSize(new Dimension(100, 100));
+		addActionListener(this);
+	}
 
-    this.setBackground (couleurFond);
-    this.setPreferredSize (new Dimension (100, 100));
-    this.typeCase = typeCase;
-    addActionListener (this);
-  }
+	public Pion getPion() {
+		return this.pion;
+	}
 
-  public Pion
-  getPion ()
-  {
-    return pion;
-  }
+	public void setPion(Pion p) {
+		if (p != null) {
+			this.pion = p;
+			this.occupe = true;
+			this.imagePion = new ImageIcon("/Users/pierre/eclipse-workspace/JeuKono/" + pion.toString() + ".png");
+			System.out.println("/Users/pierre/eclipse-workspace/JeuKono/" + pion.toString() + ".png");
+			this.setIcon(imagePion);
+		} else {
+			this.occupe = false;
+			imagePion = null;
+			pion = null;
+			setIcon(imagePion);
+		}
+	}
 
-  public void
-  setPion (Pion p)
-  {
-    if (p != null)
-      {
-        this.pion = p;
-        occupe = true;
-        this.imagePion = new ImageIcon (
-            "C:\\Users\\Afev 92 02\\Documents\\jeukono\\JeuKono\\"
-            + pion.toString () + ".png");
-        this.setIcon (imagePion);
-      }
-    else
-      {
-        occupe = false;
-        imagePion = null;
-        pion = null;
-        setIcon (imagePion);
-      }
-  }
+	public int getAbscisse() {
+		// A completer
+		return this.abscisse;
 
-  public int
-  getAbscisse ()
-  {
-    // A completer
-    if (this.typeCase == 0)
-      {
-        return this.abscisse;
-      }
-    else
-      {
-        return 4; // car dans la zone de jeux il n'y a pas d'abscisse à 4 
-      }
-  }
+	}
 
-  public int
-  getTypeCase ()
-  {
-    // A completer
-    return this.typeCase;
-  }
+	public int getOrdonnee() {
+		// A completer
+		return this.ordonnee;
+	}
 
-  public int
-  getOrdonnee ()
-  {
-    // A completer
-    if (this.typeCase == 0)
-      {
-        return this.ordonnee;
-      }
-    else
-      {
-        return 0; // car dans la zone de jeux il n'y a pas d'ordonnee à 0
-      }
-  }
+	public int getTypeCase() {
+		// A completer
+		return this.typeCase;
+	}
 
   public boolean
   isOccupe ()
@@ -115,58 +88,96 @@ public class Case extends JButton implements ActionListener
         // si on n'a pas encore selectionne de case de depart
         Kono.caseDep = ((Case)e.getSource ());
 
-        // si la case selectionne pour le depart du deplacement est valide :
-        // elle est occupee par une Pion de la couleur du joueur dont c'est le
-        // tour, on peut selectionner la case d'arrivee
-        Kono.caseDep.setBorder (Kono.redline);
-        Kono.etat++;
-      }
-    else
-      {
-        if (Kono.etat == 1)
-          {
-            // identification de la case possible d'arrivée
-            Kono.caseArr = ((Case)e.getSource ());
+			// si la case selectionne pour le depart du deplacement est valide : elle est
+			// occupee par une Pion de la couleur du joueur dont c'est le tour, on peut
+			// selectionner la case d'arrivee
 
-            boolean finPartieBloque = false;
-            boolean finPartieNbPion = false;
-            boolean finPartieSansPrise = false;
-            if (Kono.caseDep.getTypeCase () == 0)
-              {
-                // si la case selectionnee est bien dns le plateau et que le
-                // coup est valide
-                if (Kono.unPlateau.coupValide (Kono.caseDep, Kono.caseArr)
-                    == 1)
-                  {
-					Kono.caseDep.setBorder(Kono.empty);
-					Kono.etat = 0;
-                    // si c'est un deplacement simple
-                    // 1. on deplace le pion
-                    // 2. on verifie que le nombre de coups sans prise est
-                    // inferieur a 25
-                    // 3. on verifie que le prochain joueur pourra jouer
-                  }
-                else
-                  {
-                    if (Kono.unPlateau.coupValide (Kono.caseDep, Kono.caseArr)
-                        == 2)
-                      {
-                        // si c'est un deplacement avec prise
-                        // 1. on deplace le pion
-                        // 2. on verifie que le prochain joueur a plus d'un
-                        // pion
-                        // 3. on verifie que le prochain joueur pourra jouer
-                      }
-                    else
-                      {
-                        // la case d'arrivee selectionnee n'est pas valide
-                        if (Kono.caseArr.getPion () != null)
-                          { // si elle contient un pion de la couleur du
-                            // joueur, elle devient la case d'arrivee
-                          }
-                      }
-                  }
-              }
+			if (Kono.caseDep.getTypeCase() == 0) {
+				if (Kono.caseDep.isOccupe() == true) {
+					if (Kono.caseDep.getPion().getCouleur() == Kono.joueur) {
+
+						Kono.caseDep.setBorder(Kono.redline);
+						Kono.etat = 1;
+					}
+				}
+			}
+		} else {
+			if (Kono.etat == 1) {
+				// identification de la case possible d'arrivée
+				Kono.caseArr = ((Case) e.getSource());
+
+				boolean finPartieBloque = false;
+				boolean finPartieNbPion = false;
+				boolean finPartieSansPrise = false;
+				if (Kono.caseArr.getTypeCase() == 0) {
+
+					if (Kono.caseArr.isOccupe() == true) {
+						if (Kono.caseArr.getPion().getCouleur() == Kono.joueur) {
+							Kono.caseDep.setBorder(Kono.empty);
+							Kono.caseDep = Kono.caseArr;
+							Kono.caseDep.setBorder(Kono.redline);
+						}
+					}
+
+					// si la case selectionnee est bien dns le plateau et que le coup est valide
+					if (Kono.unPlateau.coupValide(Kono.caseDep, Kono.caseArr) == 1) {
+						// si c'est un deplacement simple
+						// Kono.caseArr.setPion(Kono.caseDep.getPion());
+						// Kono.caseDep.setBorder(null);
+						// Kono.caseDep.setPion(null);
+
+						// 1. on deplace le pion
+						Kono.unPlateau.jouerCoup(Kono.caseDep, Kono.caseArr);
+						// 2. on verifie que le nombre de coups sans prise est inferieur a 25
+						if (Kono.nbCoupSansPrise == 25)
+							finPartieSansPrise = true;
+
+						// changer de joueur
+						if (Kono.joueur == CouleurPion.blanc)
+							Kono.joueur = CouleurPion.noir;
+						else
+							Kono.joueur = CouleurPion.blanc;
+
+						// 3. on verifie que le prochain joueur pourra jouer (c'est Kono.joueur)
+						if (Kono.unPlateau.testDeplacement() == false)
+							finPartieBloque = true;
+
+						Kono.etat = 0;
+
+					} else {
+						if (Kono.unPlateau.coupValide(Kono.caseDep, Kono.caseArr) == 2) {
+							// si c'est un deplacement avec prise
+							// 1. on deplace le pion
+
+							Kono.unPlateau.jouerCoupPrise(Kono.caseDep, Kono.caseArr);
+
+							// changer de joueur
+							if (Kono.joueur == CouleurPion.blanc) {
+								Kono.joueur = CouleurPion.noir;
+								if (Kono.nbPionNoir <= 1)
+									finPartieNbPion = true;
+							} else {
+								Kono.joueur = CouleurPion.blanc;
+								if (Kono.nbPionBlanc <= 1)
+									finPartieNbPion = true;
+
+							}
+
+							if (Kono.unPlateau.testDeplacement() == false)
+								finPartieBloque = true;
+
+							Kono.etat = 0;
+							// Joueur = !Joueur; // si Joueur = true c'est joureur 1 sinon joueur 2
+							// 2. on verifie que le prochain joueur a plus d'un pion
+							// 3. on verifie que le prochain joueur pourra jouer
+						} /*
+							 * else { // la case d'arrivee selectionnee n'est pas valide
+							 * Kono.caseDep.setBorder(null); if (Kono.caseArr.getPion() != null) {// si elle
+							 * contient un pion de la couleur du joueur, Kono.etat = 0; // elle devient la
+							 * case d'arrivee } Kono.etat = 0; }
+							 */
+					}
+				}
 
             // on met a jour l'affichage su nombre de pions des joueurs
             Kono.scoreBlanc.setText ("Score Joueur Blanc \n "

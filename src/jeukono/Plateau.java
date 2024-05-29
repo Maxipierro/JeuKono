@@ -19,18 +19,18 @@ public class Plateau extends JPanel {
 		this.setLayout(new GridLayout(4, 8));
 		monPlateau = new Case[4][8];
 		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 2; j++) {
-				monPlateau[i][j] = new Case(Color.white, i, j, 1);
-				this.add(monPlateau[i][j]);
-			}
+//			for (int j = 0; j < 2; j++) {
+//				monPlateau[i][j] = new Case(Color.white, i, j, 1);
+//				this.add(monPlateau[i][j]);
+//			}
 			for (int j = 2; j < 6; j++) {
-				monPlateau[i][j] = new Case(Color.gray, i, j, 0);
+				monPlateau[i][j] = new Case(Color.lightGray, i, j, 0);
 				this.add(monPlateau[i][j]);
 			}
-			for (int j = 6; j < 8; j++) {
-				monPlateau[i][j] = new Case(Color.black, i, j, 1);
-				this.add(monPlateau[i][j]);
-			}
+//			for (int j = 6; j < 8; j++) {
+//				monPlateau[i][j] = new Case(Color.black, i, j, 1);
+//				this.add(monPlateau[i][j]);
+//			}
 		}
 
 		monPlateau[0][2].setPion((new Pion(CouleurPion.blanc)));

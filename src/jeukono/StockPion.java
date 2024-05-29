@@ -2,6 +2,8 @@ package jeukono;
 
 import java.awt.GridLayout;
 
+import java.awt.Color;
+
 import javax.swing.JPanel;
 
 public class StockPion extends JPanel {
@@ -16,9 +18,14 @@ public class StockPion extends JPanel {
 		this.couleur = couleur;
 		this.indi = 0;
 		this.indj = 0;
+		monStockPion = new Case[4][2];
 		this.setLayout(new GridLayout(4, 2));
-		// A completer
-
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 2; j++) {
+				monStockPion[i][j] = new Case(Color.white, i, j, 1);
+				this.add(monStockPion[i][j]);
+			}
+		}
 	}
 
 	public void ajouterPion(Pion p) {
